@@ -19,7 +19,10 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ userName, onContinue, onSignO
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8 text-center relative">
+    <div
+      className="min-h-screen bg-black flex flex-col items-center justify-center p-8 text-center relative overflow-hidden"
+      style={{ isolation: 'isolate', paddingBottom: '6rem' }}
+    >
       {/* Top Navigation */}
       <div className="absolute top-8 left-8 right-8 z-20 flex justify-between items-center">
         <button 
@@ -53,7 +56,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ userName, onContinue, onSignO
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="max-w-5xl z-10"
+        className="max-w-5xl z-10 p-8"
       >
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
@@ -111,7 +114,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ userName, onContinue, onSignO
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-12 left-0 right-0 flex flex-col items-center space-y-2"
+        className="absolute bottom-12 left-0 right-0 z-10 flex flex-col items-center space-y-2"
       >
         <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/30">Created by Dentsu DAM [Data, Analytics and Measurement]</span>
       </motion.div>

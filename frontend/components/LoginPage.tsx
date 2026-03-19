@@ -104,7 +104,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
         className="flex-1 flex flex-col items-center justify-center p-6 pt-0 md:p-10 lg:p-24 relative overflow-hidden bg-black border-r border-white/5"
         style={{ paddingTop: 0, paddingBottom: 0 }}
       >
-        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#E82429] opacity-10 blur-[120px] rounded-full"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#E82429] opacity-10 blur-[120px] rounded-full hidden lg:block"></div>
 
         <motion.div
           initial={{ opacity: 0, y: -20 }}
