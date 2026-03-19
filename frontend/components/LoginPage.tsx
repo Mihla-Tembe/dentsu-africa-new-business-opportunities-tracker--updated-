@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, ShieldCheck, HelpCircle } from 'lucide-react';
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { auth } from '../firebase';
 
 interface LoginPageProps {
@@ -23,12 +26,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
     setAuthErrorCode('');
     setResetMessage('');
     setIsSubmitting(true);
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       const code = error?.code || 'auth/unknown';
       setAuthErrorCode(code);
-      if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+
+      if (
+        code === 'auth/invalid-credential' ||
+        code === 'auth/wrong-password' ||
+        code === 'auth/user-not-found'
+      ) {
         setAuthError('Invalid email or password.');
       } else if (code === 'auth/invalid-email') {
         setAuthError('Invalid email format.');
@@ -50,23 +59,37 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
 
   const handleResetPassword = async () => {
     setAuthError('');
+    setAuthErrorCode('');
     setResetMessage('');
 
-    if (!email.trim()) {
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
       setAuthError('Enter your email to reset your password.');
       return;
     }
 
     setIsResettingPassword(true);
+
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(auth, trimmedEmail, {
+        url: `${window.location.origin}/login`,
+        handleCodeInApp: false,
+      });
+
       setResetMessage('Password reset email sent. Check your inbox.');
     } catch (error: any) {
       const code = error?.code || 'auth/unknown';
+      setAuthErrorCode(code);
+
       if (code === 'auth/invalid-email') {
         setAuthError('Invalid email format.');
       } else if (code === 'auth/user-not-found') {
         setAuthError('No account found for this email.');
+      } else if (code === 'auth/too-many-requests') {
+        setAuthError('Too many reset attempts. Please wait a bit and try again.');
+      } else if (code === 'auth/network-request-failed') {
+        setAuthError('Network error. Check your connection and try again.');
       } else {
         setAuthError('Could not send reset email. Please try again.');
       }
@@ -87,14 +110,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-            className="z-10 h-16 flex items-center justify-center"
+          className="z-10 h-16 flex items-center justify-center"
         >
-              <h1
-                className="font-black text-white tracking-tighter uppercase"
-                style={{ fontSize: 'clamp(1rem, 3.8vw, 2.25rem)' }}
-              >
-                dentsu Africa
-              </h1>
+          <h1
+            className="font-black text-white tracking-tighter uppercase"
+            style={{ fontSize: 'clamp(1rem, 3.8vw, 2.25rem)' }}
+          >
+            dentsu Africa
+          </h1>
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center items-center py-0 text-center">
@@ -148,7 +171,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
         <div className="h-16 flex items-center justify-center">
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-gray-50 border border-gray-100 rounded-full">
             <ShieldCheck size={14} className="text-[#E82429]" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Secure Access</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+              Secure Access
+            </span>
           </div>
         </div>
 
@@ -167,9 +192,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Corporate Email</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">
+                  Corporate Email
+                </label>
                 <div className="relative group">
-                  <Mail className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors" size={18} />
+                  <Mail
+                    className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors"
+                    size={18}
+                  />
                   <input
                     type="email"
                     required
@@ -182,9 +212,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Security Key</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">
+                  Security Key
+                </label>
                 <div className="relative group">
-                  <Lock className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors" size={18} />
+                  <Lock
+                    className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors"
+                    size={18}
+                  />
                   <input
                     type="password"
                     required
@@ -199,13 +234,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
               {authError && (
                 <div className="space-y-1">
                   <p className="text-xs font-bold text-red-500">{authError}</p>
-                  {import.meta.env.DEV && authErrorCode && (
+                  {process.env.NODE_ENV === 'development' && authErrorCode && (
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
                       {authErrorCode}
                     </p>
                   )}
                 </div>
               )}
+
               {resetMessage && (
                 <p className="text-xs font-bold text-green-600">{resetMessage}</p>
               )}
@@ -214,7 +250,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSupport }) => {
                 type="button"
                 onClick={handleResetPassword}
                 disabled={isResettingPassword}
-                className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors"
+                className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors disabled:opacity-50"
               >
                 {isResettingPassword ? 'Sending reset email...' : 'Reset password'}
               </button>

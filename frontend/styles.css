@@ -111,7 +111,7 @@ html.dark body {
 .h-1 { height: 0.25rem; }
 .h-\[40\%\] { height: 40%; }
 .h-\[60\%\] { height: 60%; }
-
+.h-\[calc\(100\%\+60px\)\] { height: calc(100% + 60px); }
 
 .w-full { width: 100%; }
 .w-80 { width: 20rem; }

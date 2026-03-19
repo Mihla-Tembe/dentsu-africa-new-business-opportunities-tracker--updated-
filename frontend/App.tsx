@@ -117,7 +117,7 @@ const App: React.FC = () => {
     'https://lookerstudio.google.com/embed/reporting/66bba6b6-e3a9-4ecd-9d1b-483a1ab1f622/page/p_h0qsci1gjd';
 
   return (
-    <div className="h-screen overflow-hidden bg-white transition-colors duration-300 selection:bg-[#E82429] selection:text-white dark:bg-black">
+    <div className="h-screen overflow-y-auto bg-white transition-colors duration-300 selection:bg-[#E82429] selection:text-white dark:bg-black">
       <AnimatePresence mode="wait">
         {view === 'LOGIN' && (
           <motion.div
@@ -181,9 +181,9 @@ const App: React.FC = () => {
               setView={setView}
             />
 
-            <main className="flex-1 min-h-0 w-full overflow-hidden">
+            <main className="flex-1 min-h-0 w-full overflow-y-auto">
               {view === 'DASHBOARD' ? (
-                <div className="h-full w-full overflow-hidden">
+                <div className="h-full w-full">
                   <LookerEmbed
                     url={LOOKER_URL}
                     title="dentsu Africa New Business Opportunities Tracker"

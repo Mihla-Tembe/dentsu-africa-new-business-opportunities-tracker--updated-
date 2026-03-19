@@ -19,7 +19,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ userName, onContinue, onSignO
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8 text-center relative">
       {/* Top Navigation */}
       <div className="absolute top-8 left-8 right-8 z-20 flex justify-between items-center">
         <button 

@@ -9,7 +9,7 @@ interface SupportPageProps {
 
 const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
   return (
-    <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-6 relative transition-colors duration-300">
       {/* Background Elements */}
       <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#E82429] opacity-5 blur-[120px] rounded-full"></div>
       
